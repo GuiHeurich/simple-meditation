@@ -65,13 +65,13 @@ class MainActivity : AppCompatActivity() {
             }.start()
         }
 
-        fun playBell() {
-            var mediaPlayer = MediaPlayer.create(this, R.raw.pet)
-            mediaPlayer.start()
-        }
+//        fun playBell() {
+//            var mediaPlayer = MediaPlayer.create(this, R.raw.pet)
+//            mediaPlayer.start()
+//        }
 
         startButton.setOnClickListener {
-            playBell()
+//            playBell()
             startCounter(secondsRemaining = seekBar.progress.toLong())
         }
 
