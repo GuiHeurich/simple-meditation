@@ -3,6 +3,7 @@ package com.example.simplemeditation
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
@@ -11,6 +12,11 @@ import java.util.*
 import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
+
+    private var mp: MediaPlayer? = null
+    private var currentBell = mutableListOf(R.raw.bell)
+    private var countDownTimer : CountDownTimer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,9 +45,17 @@ class MainActivity : AppCompatActivity() {
                 selectionTextView.text = seekBar.progress.toString()
             }
         })
+        fun playBell(id: Int) {
+            if (mp == null) {
+                mp = MediaPlayer.create(this, id)
+                Log.d("MainActivity", "ID: ${mp!!.audioSessionId}" )
+            }
+            mp?.start()
+            Log.d("MainActivity", "Duration: ${mp!!.duration/1000} seconds")
+        }
 
         fun startCounter(secondsRemaining: Long) {
-            object : CountDownTimer(secondsRemaining * 60000, 1000) {
+            countDownTimer = object : CountDownTimer(secondsRemaining * 60000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     var diff = millisUntilFinished
                     val secondsInMilli: Long = 1000
@@ -61,17 +75,20 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onFinish() {
                     resultsTextView.text = "Namaste"
+                    playBell(id = currentBell[0])
                 }
             }.start()
         }
 
-//        fun playBell() {
-//            var mediaPlayer = MediaPlayer.create(this, R.raw.pet)
-//            mediaPlayer.start()
-//        }
+        fun stopCountDownTimer() {
+            if ( countDownTimer != null) {
+                countDownTimer!!.cancel()
+            }
+        }
 
         startButton.setOnClickListener {
-//            playBell()
+            stopCountDownTimer()
+            playBell(id = currentBell[0])
             startCounter(secondsRemaining = seekBar.progress.toLong())
         }
 
