@@ -8,8 +8,7 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
-import kotlin.system.measureTimeMillis
+
 
 class MainActivity : AppCompatActivity() {
 
