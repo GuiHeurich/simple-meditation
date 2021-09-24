@@ -20,38 +20,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val startButton = findViewById<Button>(R.id.startButton)
-        val resultsTextView = findViewById<TextView>(R.id.resultsTextView)
-        val seekBar = findViewById<SeekBar>(R.id.seekBar)
-        val selectionTextView = findViewById<TextView>(R.id.selectionTextView)
-        selectionTextView.text = seekBar.progress.toString()
 
-        seekBar?.setOnSeekBarChangeListener(object :
+        val startButton: Button = findViewById<Button>(R.id.startButton)
+        val resultsTextView: TextView = findViewById<TextView>(R.id.resultsTextView)
+        val seekBar: SeekBar = findViewById<SeekBar>(R.id.seekBar)
+        val selectionTextView: TextView = findViewById<TextView>(R.id.selectionTextView)
+
+        seekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar,
                                            progress: Int, fromUser: Boolean) {
-                val selectionTextView = findViewById<TextView>(R.id.selectionTextView)
                 selectionTextView.text = seekBar.progress.toString()
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
-                val selectionTextView = findViewById<TextView>(R.id.selectionTextView)
                 selectionTextView.text = seekBar.progress.toString()
             }
 
             override fun onStopTrackingTouch(seek: SeekBar) {
-                val selectionTextView = findViewById<TextView>(R.id.selectionTextView)
                 selectionTextView.text = seekBar.progress.toString()
             }
         })
         fun playBell(id: Int) {
-            if (mp == null) {
-                mp = MediaPlayer.create(this, id)
-                Log.d("MainActivity", "ID: ${mp!!.audioSessionId}" )
+            mp = MediaPlayer.create(this, id)
+            mp.start()
             }
-            mp?.start()
-            Log.d("MainActivity", "Duration: ${mp!!.duration/1000} seconds")
-        }
 
         fun startCounter(secondsRemaining: Long) {
             countDownTimer = object : CountDownTimer(secondsRemaining * 60000, 1000) {
