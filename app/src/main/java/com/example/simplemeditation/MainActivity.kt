@@ -3,16 +3,14 @@ package com.example.simplemeditation
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-
 class MainActivity : AppCompatActivity() {
 
-    private var mp: MediaPlayer? = null
+    lateinit var mp: MediaPlayer
     private var currentBell = mutableListOf(R.raw.bell)
     private var countDownTimer : CountDownTimer? = null
 
@@ -20,25 +18,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val beginButton: Button = findViewById<Button>(R.id.beginButton)
+        val counterTextView: TextView = findViewById<TextView>(R.id.counterTextView)
+        val minutesBar: SeekBar = findViewById<SeekBar>(R.id.minutesBar)
 
-        val startButton: Button = findViewById<Button>(R.id.startButton)
-        val resultsTextView: TextView = findViewById<TextView>(R.id.resultsTextView)
-        val seekBar: SeekBar = findViewById<SeekBar>(R.id.seekBar)
-        val selectionTextView: TextView = findViewById<TextView>(R.id.selectionTextView)
-
-        seekBar.setOnSeekBarChangeListener(object :
+        minutesBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar,
                                            progress: Int, fromUser: Boolean) {
-                selectionTextView.text = seekBar.progress.toString()
+                val selectedValue = minutesBar.progress.toString()
+                counterTextView.text = "$selectedValue : 00"
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) {
-                selectionTextView.text = seekBar.progress.toString()
+                val selectedValue = minutesBar.progress.toString()
+                counterTextView.text = "$selectedValue : 00"
             }
 
             override fun onStopTrackingTouch(seek: SeekBar) {
-                selectionTextView.text = seekBar.progress.toString()
+                val selectedValue = minutesBar.progress.toString()
+                counterTextView.text = "$selectedValue : 00"
             }
         })
         fun playBell(id: Int) {
@@ -59,14 +58,14 @@ class MainActivity : AppCompatActivity() {
                     val elapsedSeconds = diff / secondsInMilli
 
                     if (elapsedSeconds < 10 ) {
-                        resultsTextView.text = "$elapsedMinutes : 0$elapsedSeconds"
+                        counterTextView.text = "$elapsedMinutes : 0$elapsedSeconds"
                     } else {
-                        resultsTextView.text = "$elapsedMinutes : $elapsedSeconds"
+                        counterTextView.text = "$elapsedMinutes : $elapsedSeconds"
                     }
                 }
 
                 override fun onFinish() {
-                    resultsTextView.text = "Namaste"
+                    counterTextView.text = "Namaste"
                     playBell(id = currentBell[0])
                 }
             }.start()
@@ -78,10 +77,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        startButton.setOnClickListener {
+        beginButton.setOnClickListener {
             stopCountDownTimer()
             playBell(id = currentBell[0])
-            startCounter(secondsRemaining = seekBar.progress.toLong())
+            startCounter(secondsRemaining = minutesBar.progress.toLong())
         }
 
 
