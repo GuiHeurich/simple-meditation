@@ -3,4 +3,6 @@
     <string name="roll">Roll</string>
     <string name="how_many">How many?</string>
     <string name="for_how_long_will_you_meditate">For how long will you medidate?</string>
+    <string name="begin_button">Begin</string>
+    <string name="minutes_value">minutes</string>
 </resources>
